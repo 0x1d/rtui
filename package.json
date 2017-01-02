@@ -4,19 +4,30 @@
   "description": "rTorrent web interface",
   "main": "app.js",
   "devDependencies": {
-      "catw": "latest",
       "browserify": "latest",
+      "less": "latest",
       "watch": "latest",
-      "nodemon": "latest"
+      "nodemon": "latest",
+      "npm-run-all": "latest"
     },
     "scripts": {
-      "build:js": "browserify src/website/scripts/main.js > dist/website/main.js",
-      "watch:js": "nodemon -q -w src/website/scripts --ext \".\" --exec \"npm run build:js\"",
-      "build:css": "lessc src/website/styles/main.less dist/website/main.css",
+      "clear:website": "rm -rf dist/website/*",
+      "clear:app": "rm -rf dist/app/*",
+      "clear": "npm run clear:website && npm run clear:app",
+      "build:js": "browserify src/website/scripts/*.js > dist/website/scripts.js",
+      "build:css": "lessc src/website/styles/main.less dist/website/styles.css",
+      "build:html": "cp -r src/website/markup/* dist/website",
+      "build:assets": "cp -r src/website/assets dist/website",
+      "build:app": "cp -r src/app/* dist/app",
+      "build": "npm run build:js && npm run build:css && npm run build:html && npm run build:assets && npm run build:app",
+      "watch:html": "nodemon -q -w src/website/markup --ext \".\" --exec \"npm run build:html\"",
+      "watch:assets": "nodemon -q -w src/website/assets --ext \".\" --exec \"npm run build:assets\"",
       "watch:css": "nodemon -q -w src/website/styles --ext \".\" --exec \"npm run build:css\"",
-      "build": "npm run build:js && npm run build:css",
-      "watch": "npm run watch:js && npm run watch:css",
-      "app:dev": "nodemon --watch src/app src/app/main.js"
+      "watch:js": "nodemon -q -w src/website/scripts --ext \".\" --exec \"npm run build:js\"",
+      "watch:app-build": "nodemon -q -w src/app --ext \".\" --exec \"npm run build:app\"",
+      "watch:app": "nodemon --watch src/app src/app/main.js",
+      "dev": "npm run clear && npm run build && npm-run-all --parallel watch:*",
+      "app": "node dist/app/main.js"
   },
   "repository": {
     "type": "git",
