@@ -3,8 +3,20 @@
   "version": "1.0.0",
   "description": "rTorrent web interface",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "devDependencies": {
+      "catw": "latest",
+      "browserify": "latest",
+      "watch": "latest",
+      "nodemon": "latest"
+    },
+    "scripts": {
+      "build:js": "browserify src/website/scripts/main.js > dist/website/main.js",
+      "watch:js": "nodemon -q -w src/website/scripts --ext \".\" --exec \"npm run build:js\"",
+      "build:css": "lessc src/website/styles/main.less dist/website/main.css",
+      "watch:css": "nodemon -q -w src/website/styles --ext \".\" --exec \"npm run build:css\"",
+      "build": "npm run build:js && npm run build:css",
+      "watch": "npm run watch:js && npm run watch:css",
+      "app:dev": "nodemon --watch src/app src/app/main.js"
   },
   "repository": {
     "type": "git",

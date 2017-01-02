@@ -9,7 +9,7 @@ class RTorrent {
     loadLink(link) {
         var _this = this;
         return new Promise((fulfill, reject) => {
-            _this.client.loadLink(decodeURI(link), (error, data) => {
+            _this.client.loadLink(link, (error, data) => {
                 if(error) reject(error);
                 else {
                     fulfill(data);
