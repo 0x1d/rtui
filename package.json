@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/0x1d/rtui#readme",
   "dependencies": {
+    "node-rtorrent": "^1.1.0",
     "slimple": "^0.6.5"
   }
 }
