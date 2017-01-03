@@ -26,7 +26,7 @@
       "watch:css": "nodemon -q -w src/website/styles --ext \".\" --exec \"npm run build:css\"",
       "watch:js": "nodemon -q -w src/website/scripts --ext \".\" --exec \"npm run build:js\"",
       "watch:config": "nodemon -q -w config --ext \".\" --exec \"npm run cp:config\"",
-      "watch:app-buid": "nodemon -q -w src/app --ext \".\" --exec \"npm run build:app\"",
+      "watch:app-build": "nodemon -q -w src/app --ext \".\" --exec \"npm run build:app\"",
       "watch:app": "nodemon --watch src/app src/app/main.js",
       "docker:build": "docker build -t mentex/rtui .",
       "docker:run": "docker run -p 8080:8080 mentex/rtui",
