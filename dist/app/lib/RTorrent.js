@@ -1,6 +1,7 @@
 "use strict";
 
 const RTorrentClient = require('node-rtorrent');
+
 class RTorrent {
 
     constructor(config) {

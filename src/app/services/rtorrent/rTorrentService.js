@@ -1,7 +1,7 @@
 const qs = require('querystring');
 
-module.exports = {
-    
+module.exports = rTorrentService = {
+
     resource: '/api',
 
     GET: (ctx, http) => {
