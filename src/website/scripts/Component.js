@@ -5,9 +5,9 @@ import $ from 'jquery';
 
 export default class Component {
 
-  constructor(selector, template, api) {
-    this.selector = selector;
-    this.template = template;
+  constructor(component, api) {
+    this.component = component;
+    this.template = document.querySelector('#' +  component).import.body.textContent;
     this.api = api;
   }
 
@@ -23,7 +23,8 @@ export default class Component {
 
   render() {
     this.loadData((data) => {
-      $(this.selector).html(Mustache.render(this.template, data));
+      console.log(data);
+      $('.' + this.component).html(Mustache.render(this.template, data));
     });
   }
 
