@@ -4,17 +4,12 @@
       <meta charset="utf-8">
       <title>rtui</title>
       <link rel="stylesheet" href="styles.css">
-      <link id="torrentlist" rel="import" href="torrentlist.html">
       <script src="scripts.js"></script>
       <script src="http://localhost:9091"></script>
       <link rel="shortcut icon" href="/assets/favicon.ico" />
     </head>
     <body>
-        <h1>rTorrent UI</h1>
-        <form method="post" action="/rtorrent/api">
-            <input type="text" name="torrentLink">
-            <input type="submit" value="Submit">
-        </form>
-        <div class="torrentlist"></div>
+        <div class="AddTorrent"></div>
+        <div class="TorrentList"></div>
     </body>
 </html>

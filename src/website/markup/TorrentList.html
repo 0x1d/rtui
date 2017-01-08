@@ -1,0 +1,19 @@
+<table>
+  <th>Name</th>
+  <th>State</th>
+  <th>Down</th>
+  <th>Up</th>
+  <th>Up Total</th>
+  <th>Down Total</th>
+  {{ #torrents }}
+  <tr>
+    <td>{{ name }}</td>
+    <td>{{ state }}</td>
+    <td>{{ down_rate }}</td>
+    <td>{{ up_rate }}</td>
+    <td>{{ up_total }}</td>
+    <td>{{ down_total }}</td>
+  </tr>
+  {{ /torrents }}
+</table>
+<button class="reload">Reload</button>

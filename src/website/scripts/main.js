@@ -1,7 +1,13 @@
 import $ from 'jquery';
-import Component from './Component';
+import RestStore from './core/RestStore';
+import Mediator from './core/Mediator'
+import AddTorrent from './components/AddTorrent';
+import TorrentList from './components/TorrentList';
 
 $(() => {
-  var c = new Component('torrentlist', '/rtorrent/api');
-  c.render();
+  var mediator = new Mediator();
+  var restStore = new RestStore('/rtorrent/api');
+
+  new AddTorrent($('.AddTorrent'), restStore, mediator).render();
+  new TorrentList($('.TorrentList'), restStore, mediator).render();
 });
