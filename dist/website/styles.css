@@ -15,8 +15,13 @@ table td {
 }
 input[type="text"] {
   height: 32px;
-  width: 90%;
 }
 button {
   height: 32px;
+}
+.AddTorrent {
+  margin-bottom: 20px;
+}
+.AddTorrent input {
+  width: 90%;
 }
