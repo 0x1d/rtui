@@ -36,6 +36,7 @@
     "watch:app": "nodemon --watch src/app src/app/main.js",
     "docker:build": "docker build -t mentex/rtui .",
     "docker:run": "docker run -p 8080:8080 -d mentex/rtui",
+    "docker:release": "docker tag mentex/rtui docker01:5000/rtui && docker push docker01:5000/rtui",
     "dev": "npm run clear && npm run build && npm-run-all --parallel watch:*",
     "app": "node dist/app/main.js"
   },
