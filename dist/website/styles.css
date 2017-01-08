@@ -25,3 +25,6 @@ button {
 .AddTorrent input {
   width: 90%;
 }
+.TorrentList table {
+  width: 100%;
+}
