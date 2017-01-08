@@ -55,6 +55,6 @@
     "jquery": "^3.1.1",
     "mustache": "^2.3.0",
     "node-rtorrent": "^1.1.0",
-    "slimple": "^0.6.5"
+    "slimple": "latest"
   }
 }

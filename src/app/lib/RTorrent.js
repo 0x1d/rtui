@@ -14,7 +14,7 @@ class RTorrent {
             _this.client.loadLink(link, (error, data) => {
                 if(error) reject(error);
                 else {
-                    fulfill(data);
+                    fulfill(data || {});
                 }
             });
         });

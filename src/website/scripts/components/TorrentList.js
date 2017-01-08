@@ -3,7 +3,7 @@ import $ from 'jquery';
 import Component from '../core/Component';
 
 export default class TorrentList extends Component {
-  
+
   constructor(node, dataStore, mediator){
     super(node, mediator);
     this.dataStore = dataStore;

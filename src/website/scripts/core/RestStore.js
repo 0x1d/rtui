@@ -7,16 +7,22 @@ export default class RestStore extends DataStore {
     this.endpoint = endpoint;
   }
   load(entry){
-    return fetch(this.endpoint)
-      .then(this.toJsonResponse);
+    return this.request('GET', entry);
   }
-  save(entry){}
+  save(entry){
+    return this.request('POST', entry);
+  }
   add(entry){
-    return $.post(this.endpoint, entry);
+    return this.request('PUT', entry);
   }
-  delete(entry){}
-
-  toJsonResponse(response) {
-    return response.json();
+  delete(entry){
+    return this.request('DELETE', entry);
+  }
+  request(type, payload){
+    return $.ajax({
+      url: this.endpoint,
+      type: type,
+      data: payload
+    }).then(JSON.parse);
   }
 }

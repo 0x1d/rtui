@@ -10357,23 +10357,31 @@
 	  (0, _createClass3.default)(RestStore, [{
 	    key: 'load',
 	    value: function load(entry) {
-	      return fetch(this.endpoint).then(this.toJsonResponse);
+	      return this.request('GET', entry);
 	    }
 	  }, {
 	    key: 'save',
-	    value: function save(entry) {}
+	    value: function save(entry) {
+	      return this.request('POST', entry);
+	    }
 	  }, {
 	    key: 'add',
 	    value: function add(entry) {
-	      return _jquery2.default.post(this.endpoint, entry);
+	      return this.request('PUT', entry);
 	    }
 	  }, {
 	    key: 'delete',
-	    value: function _delete(entry) {}
+	    value: function _delete(entry) {
+	      return this.request('DELETE', entry);
+	    }
 	  }, {
-	    key: 'toJsonResponse',
-	    value: function toJsonResponse(response) {
-	      return response.json();
+	    key: 'request',
+	    value: function request(type, payload) {
+	      return _jquery2.default.ajax({
+	        url: this.endpoint,
+	        type: type,
+	        data: payload
+	      }).then(JSON.parse);
 	    }
 	  }]);
 	  return RestStore;
