@@ -2,7 +2,7 @@ import $ from 'jquery';
 import Component from '../core/Component';
 
 export default class AddTorrent extends Component {
-  
+
   constructor(node, dataStore, mediator){
     super(node, mediator);
     this.dataStore = dataStore;
@@ -12,6 +12,7 @@ export default class AddTorrent extends Component {
   subscribe() {
     let _this = this;
     this.node.delegate('button', 'click', () => { _this.addTorrent(); });
+    this.node.delegate('input', 'keypress', (event) => {  if (event.which == 13) _this.addTorrent(); });
   }
 
   getTorrentLinkField(){

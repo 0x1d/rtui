@@ -12062,6 +12062,9 @@
 	      this.node.delegate('button', 'click', function () {
 	        _this.addTorrent();
 	      });
+	      this.node.delegate('input', 'keypress', function (event) {
+	        if (event.which == 13) _this.addTorrent();
+	      });
 	    }
 	  }, {
 	    key: 'getTorrentLinkField',
