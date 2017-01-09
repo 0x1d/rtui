@@ -12138,7 +12138,7 @@
 	    key: 'render',
 	    value: function render(data) {
 	      var _this = this;
-	      this.template.done(function (template) {
+	      this.template.then(function (template) {
 	        _this.node.html(_mustache2.default.render(template, data));
 	      });
 	    }

@@ -15,7 +15,7 @@ export default class Component {
   render(data) {
     let _this = this;
     this.template
-      .done((template)=>{
+      .then((template) => {
         _this.node.html(
           Mustache.render(template, data));
       });
