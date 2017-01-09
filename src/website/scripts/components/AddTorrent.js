@@ -1,11 +1,12 @@
 import $ from 'jquery';
+import RestStore from '../core/RestStore';
 import Component from '../core/Component';
 
 export default class AddTorrent extends Component {
 
-  constructor(node, dataStore, mediator){
+  constructor(node, mediator){
     super(node, mediator);
-    this.dataStore = dataStore;
+    this.dataStore = new RestStore('/rtorrent/api');
     this.subscribe();
   }
 

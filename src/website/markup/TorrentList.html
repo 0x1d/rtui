@@ -10,11 +10,11 @@
   <tr>
     <td>{{ name }}</td>
     <td>{{ state }}</td>
-    <td>{{ down_rate }}</td>
-    <td>{{ up_rate }}</td>
-    <td>{{ up_total }}</td>
-    <td>{{ down_total }}</td>
-    <td>{{ size }}</td>
+    <td>{{#helpers.toMb}}{{ down_rate }}{{/helpers.toMb}}</td>
+    <td>{{#helpers.toMb}}{{ up_rate }}{{/helpers.toMb}}</td>
+    <td>{{#helpers.toMb}}{{ up_total }}{{/helpers.toMb}}</td>
+    <td>{{#helpers.toMb}}{{ down_total }}{{/helpers.toMb}}</td>
+    <td>{{#helpers.toMb}}{{ size }}{{/helpers.toMb}}</td>
   </tr>
   {{ /torrents }}
 </table>
