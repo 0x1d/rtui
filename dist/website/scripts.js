@@ -44,7 +44,7 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	var _jquery = __webpack_require__(1);
 
@@ -10791,22 +10791,23 @@
 	  function AddTorrent(node, mediator) {
 	    (0, _classCallCheck3.default)(this, AddTorrent);
 
-	    var _this2 = (0, _possibleConstructorReturn3.default)(this, (AddTorrent.__proto__ || (0, _getPrototypeOf2.default)(AddTorrent)).call(this, node, mediator));
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (AddTorrent.__proto__ || (0, _getPrototypeOf2.default)(AddTorrent)).call(this, node, mediator));
 
-	    _this2.dataStore = new _RestStore2.default('/rtorrent/api');
-	    _this2.subscribe();
-	    return _this2;
+	    _this.dataStore = new _RestStore2.default('/rtorrent/api');
+	    _this.subscribe();
+	    return _this;
 	  }
 
 	  (0, _createClass3.default)(AddTorrent, [{
 	    key: 'subscribe',
 	    value: function subscribe() {
-	      var _this = this;
+	      var _this2 = this;
+
 	      this.node.delegate('button', 'click', function () {
-	        _this.addTorrent();
+	        _this2.addTorrent();
 	      });
 	      this.node.delegate('input', 'keypress', function (event) {
-	        if (event.which == 13) _this.addTorrent();
+	        if (event.which == 13) _this2.addTorrent();
 	      });
 	    }
 	  }, {
@@ -10817,12 +10818,13 @@
 	  }, {
 	    key: 'addTorrent',
 	    value: function addTorrent() {
+	      var _this3 = this;
+
 	      var torrentLink = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.getTorrentLinkField().val();
 
-	      var _this = this;
 	      this.dataStore.add({ torrentLink: torrentLink }).then(function (response) {
-	        _this.mediator.trigger('addTorrent', response);
-	        _this.getTorrentLinkField().val('');
+	        _this3.mediator.trigger('addTorrent', response);
+	        _this3.getTorrentLinkField().val('');
 	      });
 	    }
 	  }]);
@@ -12186,7 +12188,7 @@
 /* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -12221,9 +12223,16 @@
 	  }
 
 	  (0, _createClass3.default)(Component, [{
+	    key: 'templateHelpers',
+	    value: function templateHelpers() {
+	      return {};
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render(data) {
 	      var _this = this;
+
+	      if (data) data.helpers = this.templateHelpers();
 	      this.template.then(function (template) {
 	        _this.node.html(_mustache2.default.render(template, data));
 	      });
@@ -12934,15 +12943,16 @@
 	  (0, _createClass3.default)(TorrentList, [{
 	    key: 'subscribe',
 	    value: function subscribe() {
-	      var _this = this;
+	      var _this3 = this;
+
 	      this.mediator.on('addTorrent', function (data) {
-	        _this.render();
+	        _this3.render();
 	      });
 	      this.node.delegate('button.reload', 'click', function (data) {
-	        _this.render();
+	        _this3.render();
 	      });
 	      setInterval(function () {
-	        _this.render();
+	        _this3.render();
 	      }, 5000);
 	    }
 	  }, {
@@ -12965,12 +12975,10 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this3 = this;
+	      var _this4 = this;
 
-	      var _that = this;
 	      this.dataStore.load().then(function (data) {
-	        data.helpers = _that.templateHelpers();
-	        (0, _get3.default)(TorrentList.prototype.__proto__ || (0, _getPrototypeOf2.default)(TorrentList.prototype), 'render', _this3).call(_that, data);
+	        (0, _get3.default)(TorrentList.prototype.__proto__ || (0, _getPrototypeOf2.default)(TorrentList.prototype), 'render', _this4).call(_this4, data);
 	      });
 	    }
 	  }]);

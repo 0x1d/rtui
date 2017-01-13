@@ -11,8 +11,7 @@ module.exports = rTorrentService = {
     },
 
     PUT: (ctx, http) => {
-        var torrentLink = qs.parse(http.data).torrentLink;
-        ctx.rtorrent.loadLink(torrentLink)
+        ctx.rtorrent.loadLink(http.data.torrentLink)
             .then(http.reply)
             .catch(this.throwError);
     },

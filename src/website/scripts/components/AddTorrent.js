@@ -11,9 +11,8 @@ export default class AddTorrent extends Component {
   }
 
   subscribe() {
-    let _this = this;
-    this.node.delegate('button', 'click', () => { _this.addTorrent(); });
-    this.node.delegate('input', 'keypress', (event) => {  if (event.which == 13) _this.addTorrent(); });
+    this.node.delegate('button', 'click', () => { this.addTorrent(); });
+    this.node.delegate('input', 'keypress', (event) => {  if (event.which == 13) this.addTorrent(); });
   }
 
   getTorrentLinkField(){
@@ -21,11 +20,10 @@ export default class AddTorrent extends Component {
   }
 
   addTorrent(torrentLink = this.getTorrentLinkField().val()){
-    let _this = this;
     this.dataStore.add({torrentLink : torrentLink})
       .then((response) => {
-          _this.mediator.trigger('addTorrent', response);
-          _this.getTorrentLinkField().val('');
+          this.mediator.trigger('addTorrent', response);
+          this.getTorrentLinkField().val('');
       });
   }
 

@@ -1,5 +1,3 @@
-"use strict";
-
 import Mustache from 'mustache';
 import $ from 'jquery';
 
@@ -12,11 +10,15 @@ export default class Component {
     this.template = $.get(this.component + '.html'); //document.querySelector('#' +  this.component).import.body.textContent;
   }
 
+  templateHelpers() {
+    return {};
+  }
+
   render(data) {
-    let _this = this;
+    if(data) data.helpers = this.templateHelpers();
     this.template
       .then((template) => {
-        _this.node.html(
+        this.node.html(
           Mustache.render(template, data));
       });
   }

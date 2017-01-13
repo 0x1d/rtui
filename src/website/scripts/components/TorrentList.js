@@ -12,14 +12,13 @@ export default class TorrentList extends Component {
   }
 
   subscribe() {
-    let _this = this;
-    this.mediator.on('addTorrent', (data) => { _this.render(); });
-    this.node.delegate('button.reload', 'click', (data) => {  _this.render(); });
-    setInterval(() => { _this.render(); }, 5000);
+    this.mediator.on('addTorrent', (data) => { this.render(); });
+    this.node.delegate('button.reload', 'click', (data) => {  this.render(); });
+    setInterval(() => { this.render(); }, 5000);
   }
 
   convertBytesToMb(bytes) {
-    return (bytes / 1048576).toFixed(3)
+    return (bytes / 1048576).toFixed(3);
   }
 
   templateHelpers() {
@@ -34,11 +33,9 @@ export default class TorrentList extends Component {
   }
 
   render() {
-    let _that = this;
     this.dataStore.load()
       .then((data) => {
-        data.helpers = _that.templateHelpers();
-        super.render.call(_that, data);
+        super.render.call(this, data);
       });
   }
 
