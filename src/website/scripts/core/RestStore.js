@@ -16,7 +16,7 @@ export default class RestStore extends DataStore {
     return this.request('PUT', entry);
   }
   delete(entry){
-    return this.request('DELETE', entry);
+    return this.request('POST', entry);
   }
   request(type, payload){
     return $.ajax({

@@ -13,7 +13,8 @@ export default class TorrentList extends Component {
 
   subscribe() {
     this.mediator.on('addTorrent', (data) => { this.render(); });
-    this.node.delegate('button.reload', 'click', (data) => {  this.render(); });
+    this.node.delegate('button.reload', 'click', (event) => {  this.render(); });
+    this.node.delegate('button.delete', 'click', (event) => {  this.delete(event); });
     setInterval(() => { this.render(); }, 5000);
   }
 
@@ -32,8 +33,22 @@ export default class TorrentList extends Component {
     }
   }
 
+  delete(event) {
+    let hash = $(event.target).parents('.entry').data('hash');
+    let request = {
+      action : 'multicall',
+      call: 'd.erase',
+      hash: hash
+    };
+    this.dataStore.delete(request)
+      .then(()=>{
+        this.render();
+      });
+  }
+
   render() {
-    this.dataStore.load({ action : 'getAll'})
+    let request = { action : 'getAll' };
+    this.dataStore.load(request)
       .then((data) => {
         super.render.call(this, data);
       });

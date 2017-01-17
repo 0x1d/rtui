@@ -6,8 +6,9 @@
   <th>Up Total</th>
   <th>Down Total</th>
   <th>Size</th>
+  <th>Actions</th>
   {{ #torrents }}
-  <tr>
+  <tr data-hash="{{hash}}" class="entry">
     <td>{{ name }}</td>
     <td>{{ state }}</td>
     <td>{{#helpers.toMb}}{{ down_rate }}{{/helpers.toMb}}</td>
@@ -15,6 +16,7 @@
     <td>{{#helpers.toMb}}{{ up_total }}{{/helpers.toMb}}</td>
     <td>{{#helpers.toMb}}{{ down_total }}{{/helpers.toMb}}</td>
     <td>{{#helpers.toMb}}{{ size }}{{/helpers.toMb}}</td>
+    <td><button class="delete">Delete</button</td>
   </tr>
   {{ /torrents }}
 </table>

@@ -12124,7 +12124,7 @@
 	  }, {
 	    key: 'delete',
 	    value: function _delete(entry) {
-	      return this.request('DELETE', entry);
+	      return this.request('POST', entry);
 	    }
 	  }, {
 	    key: 'request',
@@ -12948,8 +12948,11 @@
 	      this.mediator.on('addTorrent', function (data) {
 	        _this3.render();
 	      });
-	      this.node.delegate('button.reload', 'click', function (data) {
+	      this.node.delegate('button.reload', 'click', function (event) {
 	        _this3.render();
+	      });
+	      this.node.delegate('button.delete', 'click', function (event) {
+	        _this3.delete(event);
 	      });
 	      setInterval(function () {
 	        _this3.render();
@@ -12973,12 +12976,28 @@
 	      };
 	    }
 	  }, {
-	    key: 'render',
-	    value: function render() {
+	    key: 'delete',
+	    value: function _delete(event) {
 	      var _this4 = this;
 
-	      this.dataStore.load({ action: 'getAll' }).then(function (data) {
-	        (0, _get3.default)(TorrentList.prototype.__proto__ || (0, _getPrototypeOf2.default)(TorrentList.prototype), 'render', _this4).call(_this4, data);
+	      var hash = (0, _jquery2.default)(event.target).parents('.entry').data('hash');
+	      var request = {
+	        action: 'multicall',
+	        call: 'd.erase',
+	        hash: hash
+	      };
+	      this.dataStore.delete(request).then(function () {
+	        _this4.render();
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this5 = this;
+
+	      var request = { action: 'getAll' };
+	      this.dataStore.load(request).then(function (data) {
+	        (0, _get3.default)(TorrentList.prototype.__proto__ || (0, _getPrototypeOf2.default)(TorrentList.prototype), 'render', _this5).call(_this5, data);
 	      });
 	    }
 	  }]);

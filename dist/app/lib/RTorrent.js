@@ -54,10 +54,10 @@ class RTorrent {
 
     multicall(input) {
         return new Promise((fulfill, reject) => {
-            this.client.get(input.call, [], function (error, data) {
+            this.client.get(input.call, [input.hash], function (error, data) {
                 if (error) reject(error);
                 else {
-                    fulfill(data);
+                    fulfill(data ? data : {});
                 }
             });
         });
