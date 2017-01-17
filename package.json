@@ -33,7 +33,7 @@
     "watch:config": "nodemon -q -w config --ext \".\" --exec \"npm run cp:config\"",
     "watch:livereload": "live-reload --port 9091 dist/",
     "watch:app-build": "nodemon -q -w src/app --ext \".\" --exec \"npm run build:app\"",
-    "watch:app": "nodemon --watch src/app src/app/main.js",
+    "watch:app": "nodemon --watch dist/app src/app/main.js",
     "docker:build": "docker build -t mentex/rtui .",
     "docker:run": "docker run -p 8080:8080 -d mentex/rtui",
     "docker:release": "docker tag mentex/rtui docker01:5000/rtui && docker push docker01:5000/rtui",

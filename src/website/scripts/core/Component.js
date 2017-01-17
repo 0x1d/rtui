@@ -18,8 +18,7 @@ export default class Component {
     if(data) data.helpers = this.templateHelpers();
     this.template
       .then((template) => {
-        this.node.html(
-          Mustache.render(template, data));
+        this.node.html(Mustache.render(template, data));
       });
   }
 

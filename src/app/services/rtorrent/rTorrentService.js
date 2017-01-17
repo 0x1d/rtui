@@ -4,19 +4,24 @@ module.exports = rTorrentService = {
 
     resource: '/api',
 
-    GET: (ctx, http) => {
-        ctx.rtorrent.getAll()
-            .then(http.reply)
-            .catch(this.throwError);
+    GET: function(ctx, http) {
+      try {
+        ctx.rtorrent[http.data.action](http.data)
+          .then(http.reply)
+          .catch(this.throwError);
+      } catch (error) {
+        console.log(error);
+      }
+
     },
 
-    PUT: (ctx, http) => {
+    PUT: function(ctx, http) {
         ctx.rtorrent.loadLink(http.data.torrentLink)
             .then(http.reply)
             .catch(this.throwError);
     },
 
-    throwError: (error) => {
+    throwError: function(error) {
         throw {
             status: 500,
             error: error

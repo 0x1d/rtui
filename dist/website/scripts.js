@@ -12977,7 +12977,7 @@
 	    value: function render() {
 	      var _this4 = this;
 
-	      this.dataStore.load().then(function (data) {
+	      this.dataStore.load({ action: 'getAll' }).then(function (data) {
 	        (0, _get3.default)(TorrentList.prototype.__proto__ || (0, _getPrototypeOf2.default)(TorrentList.prototype), 'render', _this4).call(_this4, data);
 	      });
 	    }

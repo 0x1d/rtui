@@ -9,9 +9,8 @@ class RTorrent {
     }
 
     loadLink(link) {
-        var _this = this;
         return new Promise((fulfill, reject) => {
-            _this.client.loadLink(link, (error, data) => {
+            this.client.loadLink(link, (error, data) => {
                 if(error) reject(error);
                 else {
                     fulfill(data || {});
@@ -21,9 +20,8 @@ class RTorrent {
     }
 
     getAll() {
-        var _this = this;
         return new Promise((fulfill, reject) => {
-            _this.client.getAll((error, data) => {
+            this.client.getAll((error, data) => {
                 if(error) reject(error);
                 else {
                     fulfill(data);
@@ -33,9 +31,8 @@ class RTorrent {
     }
 
     getDownloadList() {
-        var _this = this;
         return new Promise((fulfill, reject) => {
-            _this.client.get('download_list', [], (error, hashes) => {
+            this.client.get('download_list', [], (error, hashes) => {
                 if(error) reject(error);
                 else {
                     fulfill(hashes);
@@ -45,9 +42,19 @@ class RTorrent {
     }
 
     getTorrentInfo(hash) {
-        var _this = this;
         return new Promise((fulfill, reject) => {
-            _this.client.get('d.name', [hash], function (error, data) {
+            this.client.get('d.name', [hash], function (error, data) {
+                if (error) reject(error);
+                else {
+                    fulfill(data);
+                }
+            });
+        });
+    }
+
+    multicall(input) {
+        return new Promise((fulfill, reject) => {
+            this.client.get(input.call, [], function (error, data) {
                 if (error) reject(error);
                 else {
                     fulfill(data);

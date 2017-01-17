@@ -33,7 +33,7 @@ export default class TorrentList extends Component {
   }
 
   render() {
-    this.dataStore.load()
+    this.dataStore.load({ action : 'getAll'})
       .then((data) => {
         super.render.call(this, data);
       });
