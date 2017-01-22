@@ -1,15 +1,23 @@
 import $ from 'jquery';
 
-import Mediator from './Mediator'
 import * as Components from '../components/exports';
 
 
 export default class App {
 
   constructor(){
-    this.mediator = new Mediator();
+
+  }
+
+  withDataStore(dataStore) {
+    this.dataStore = dataStore;
+    return this;
+  }
+
+  run() {
     this.components = this.loadComponents();
-    this.render();
+    //this.render();
+    return this;
   }
 
   loadComponents(){
@@ -17,7 +25,7 @@ export default class App {
     for(let c in Components){
       let nodes = $('.' + c);
       for(let i = 0; i < nodes.length; i++){
-        this.components.push(new Components[c]($(nodes[i]), this.mediator));
+        this.components.push(new Components[c](this, $(nodes[i])));
       };
     }
     return this.components;
@@ -27,6 +35,7 @@ export default class App {
     for(let component in this.components){
       this.components[component].render();
     }
+    return this;
   }
 
 }

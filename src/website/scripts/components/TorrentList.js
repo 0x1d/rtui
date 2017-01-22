@@ -5,17 +5,20 @@ import Component from '../core/Component';
 
 export default class TorrentList extends Component {
 
-  constructor(node, mediator){
-    super(node, mediator);
-    this.dataStore = new RestStore('/rtorrent/api');
+  constructor(ctx, node){
+    super(ctx, node);
+    this.dataStore = ctx.dataStore;
     this.subscribe();
+    this.loadData();
   }
 
   subscribe() {
-    this.mediator.on('addTorrent', (data) => { this.render(); });
-    this.node.delegate('button.reload', 'click', (event) => {  this.render(); });
+    this.dataStore.subscribe('add', (data) => { this.loadData(); });
+    this.dataStore.subscribe('delete', (data) => { this.loadData(); });
+    this.dataStore.subscribe('load', (data) => { this.render(data); });
+    this.node.delegate('button.reload', 'click', (event) => {  this.loadData(); });
     this.node.delegate('button.delete', 'click', (event) => {  this.delete(event); });
-    setInterval(() => { this.render(); }, 5000);
+    setInterval(() => { this.loadData(); }, 5000);
   }
 
   convertBytesToMb(bytes) {
@@ -40,18 +43,17 @@ export default class TorrentList extends Component {
       call: 'd.erase',
       hash: hash
     };
-    this.dataStore.delete(request)
-      .then(()=>{
-        this.render();
-      });
+    this.dataStore.delete(request);
   }
 
-  render() {
+  loadData(){
     let request = { action : 'getAll' };
-    this.dataStore.load(request)
-      .then((data) => {
-        super.render.call(this, data);
-      });
+    this.dataStore.load(request);
   }
 
+  render(data) {
+    debugger;
+    super.render.call(this, data);
+
+  }
 }

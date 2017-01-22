@@ -3,9 +3,9 @@ import $ from 'jquery';
 
 export default class Component {
 
-  constructor(node, mediator) {
+  constructor(ctx, node) {
+    this.ctx = ctx;
     this.node = node;
-    this.mediator = mediator;
     this.component = this.constructor.name;
     this.template = $.get(this.component + '.html'); //document.querySelector('#' +  this.component).import.body.textContent;
   }
