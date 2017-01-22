@@ -10,6 +10,18 @@ export default class Component {
     this.template = $.get(this.component + '.html'); //document.querySelector('#' +  this.component).import.body.textContent;
   }
 
+  beforeInit(){
+    this.subscribe();
+  }
+
+  init() {
+
+  }
+
+  subscribe() {
+
+  }
+
   templateHelpers() {
     return {};
   }

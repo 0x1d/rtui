@@ -4,9 +4,9 @@ export default class Mediator {
     this.events = [];
   }
 
-  on(event, callback){
-    this.events[event] = [];
-    this.events[event].push(callback);
+  on(event, callback, context){
+    this.events[event] = this.events[event] || [];
+    this.events[event].push(context ? callback.bind(context) : callback);
   };
 
   trigger(event, args){

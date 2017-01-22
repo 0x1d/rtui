@@ -2,13 +2,10 @@
 
 import $ from 'jquery';
 import App from './core/App';
-import Mediator from './core/Mediator';
-import RestStore from './core/RestStore';
+import RTorrentApi from './stores/RTorrentApi';
 
 $(() => {
-  var mediator = new Mediator();
-  var rTorrentApi = new RestStore('/rtorrent/api', mediator);
   new App()
-    .withDataStore(rTorrentApi)
+    .withDataStore(new RTorrentApi())
     .run();
 });

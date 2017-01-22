@@ -54,20 +54,14 @@
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _Mediator = __webpack_require__(100);
+	var _RTorrentApi = __webpack_require__(95);
 
-	var _Mediator2 = _interopRequireDefault(_Mediator);
-
-	var _RestStore = __webpack_require__(91);
-
-	var _RestStore2 = _interopRequireDefault(_RestStore);
+	var _RTorrentApi2 = _interopRequireDefault(_RTorrentApi);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	(0, _jquery2.default)(function () {
-	  var mediator = new _Mediator2.default();
-	  var rTorrentApi = new _RestStore2.default('/rtorrent/api', mediator);
-	  new _App2.default().withDataStore(rTorrentApi).run();
+	  new _App2.default().withDataStore(new _RTorrentApi2.default()).run();
 	});
 
 /***/ },
@@ -10329,32 +10323,60 @@
 	var App = function () {
 	  function App() {
 	    (0, _classCallCheck3.default)(this, App);
+
+	    this.dataStores = [];
 	  }
 
 	  (0, _createClass3.default)(App, [{
 	    key: 'withDataStore',
 	    value: function withDataStore(dataStore) {
-	      this.dataStore = dataStore;
+	      this.dataStores[dataStore.constructor.name] = dataStore;
 	      return this;
+	    }
+	  }, {
+	    key: 'getStore',
+	    value: function getStore(dataStore) {
+	      return this.dataStores[dataStore];
 	    }
 	  }, {
 	    key: 'run',
 	    value: function run() {
-	      this.components = this.loadComponents();
-	      //this.render();
+	      this._loadComponents();
+	      this._beforeInitComponents();
+	      this._initComponents();
 	      return this;
 	    }
 	  }, {
-	    key: 'loadComponents',
-	    value: function loadComponents() {
+	    key: '_loadComponents',
+	    value: function _loadComponents() {
 	      this.components = [];
 	      for (var c in Components) {
 	        var nodes = (0, _jquery2.default)('.' + c);
 	        for (var i = 0; i < nodes.length; i++) {
-	          this.components.push(new Components[c](this, (0, _jquery2.default)(nodes[i])));
+	          var component = new Components[c](this, (0, _jquery2.default)(nodes[i]));
+	          this.components.push(component);
 	        };
 	      }
-	      return this.components;
+	    }
+	  }, {
+	    key: '_initComponents',
+	    value: function _initComponents() {
+	      this.components.forEach(this._initComponent);
+	    }
+	  }, {
+	    key: '_beforeInitComponents',
+	    value: function _beforeInitComponents() {
+	      this.components.forEach(this._beforeInitComponent);
+	    }
+	  }, {
+	    key: '_initComponent',
+	    value: function _initComponent(component) {
+	      component.init();
+	    }
+	  }, {
+	    key: '_beforeInitComponent',
+	    value: function _beforeInitComponent(component) {
+	      component.beforeInit();
 	    }
 	  }, {
 	    key: 'render',
@@ -10698,7 +10720,7 @@
 	  }
 	});
 
-	var _TorrentList = __webpack_require__(95);
+	var _TorrentList = __webpack_require__(94);
 
 	Object.defineProperty(exports, 'TorrentList', {
 	  enumerable: true,
@@ -10743,13 +10765,13 @@
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _RestStore = __webpack_require__(91);
-
-	var _RestStore2 = _interopRequireDefault(_RestStore);
-
-	var _Component2 = __webpack_require__(93);
+	var _Component2 = __webpack_require__(91);
 
 	var _Component3 = _interopRequireDefault(_Component2);
+
+	var _StoreAction = __webpack_require__(93);
+
+	var _StoreAction2 = _interopRequireDefault(_StoreAction);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -10761,25 +10783,28 @@
 
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (AddTorrent.__proto__ || (0, _getPrototypeOf2.default)(AddTorrent)).call(this, ctx, node));
 
-	    _this.dataStore = ctx.dataStore;
-	    _this.subscribe();
+	    _this.rTorrentApi = ctx.getStore('RTorrentApi');
 	    return _this;
 	  }
 
 	  (0, _createClass3.default)(AddTorrent, [{
+	    key: 'init',
+	    value: function init() {
+	      this.render();
+	    }
+	  }, {
 	    key: 'subscribe',
 	    value: function subscribe() {
-	      var _this2 = this;
-
-	      this.node.delegate('button', 'click', function () {
-	        _this2.addTorrent();
-	      });
-	      this.node.delegate('input', 'keypress', function (event) {
-	        if (event.which == 13) _this2.addTorrent();
-	      });
-	      this.dataStore.subscribe('add', function (response) {
-	        _this2.torrentAdded(response);
-	      });
+	      this.rTorrentApi.on(_StoreAction2.default.ADD, this.torrentAdded.bind(this));
+	      this.node.delegate('button', 'click', this.addTorrent.bind(this));
+	      this.node.delegate('input', 'keypress', this.enterEvent.bind(this));
+	    }
+	  }, {
+	    key: 'enterEvent',
+	    value: function enterEvent() {
+	      if (event.which == 13) {
+	        this.addTorrent();
+	      }
 	    }
 	  }, {
 	    key: 'getTorrentLinkField',
@@ -10789,14 +10814,11 @@
 	  }, {
 	    key: 'addTorrent',
 	    value: function addTorrent() {
-	      var torrentLink = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.getTorrentLinkField().val();
-
-	      this.dataStore.add({ torrentLink: torrentLink });
+	      this.rTorrentApi.add({ torrentLink: this.getTorrentLinkField().val() });
 	    }
 	  }, {
 	    key: 'torrentAdded',
 	    value: function torrentAdded(response) {
-	      //this.mediator.trigger('addTorrent', response);
 	      this.getTorrentLinkField().val('');
 	    }
 	  }]);
@@ -12036,10 +12058,6 @@
 	  value: true
 	});
 
-	var _getPrototypeOf = __webpack_require__(25);
-
-	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
 	var _classCallCheck2 = __webpack_require__(3);
 
 	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -12048,144 +12066,7 @@
 
 	var _createClass3 = _interopRequireDefault(_createClass2);
 
-	var _possibleConstructorReturn2 = __webpack_require__(36);
-
-	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
-
-	var _inherits2 = __webpack_require__(83);
-
-	var _inherits3 = _interopRequireDefault(_inherits2);
-
-	var _jquery = __webpack_require__(1);
-
-	var _jquery2 = _interopRequireDefault(_jquery);
-
-	var _DataStore2 = __webpack_require__(92);
-
-	var _DataStore3 = _interopRequireDefault(_DataStore2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var RestStore = function (_DataStore) {
-	  (0, _inherits3.default)(RestStore, _DataStore);
-
-	  function RestStore(endpoint, mediator) {
-	    (0, _classCallCheck3.default)(this, RestStore);
-
-	    var _this = (0, _possibleConstructorReturn3.default)(this, (RestStore.__proto__ || (0, _getPrototypeOf2.default)(RestStore)).call(this));
-
-	    _this.endpoint = endpoint;
-	    _this.mediator = mediator;
-	    return _this;
-	  }
-
-	  (0, _createClass3.default)(RestStore, [{
-	    key: 'load',
-	    value: function load(entry) {
-	      return this.request('load', 'GET', entry);
-	    }
-	  }, {
-	    key: 'save',
-	    value: function save(entry) {
-	      return this.request('save', 'POST', entry);
-	    }
-	  }, {
-	    key: 'add',
-	    value: function add(entry) {
-	      return this.request('add', 'PUT', entry);
-	    }
-	  }, {
-	    key: 'delete',
-	    value: function _delete(entry) {
-	      return this.request('delete', 'POST', entry);
-	    }
-	  }, {
-	    key: 'request',
-	    value: function request(event, type, payload) {
-	      var _this2 = this;
-
-	      return _jquery2.default.ajax({
-	        url: this.endpoint,
-	        type: type,
-	        data: payload
-	      }).then(JSON.parse).then(function (response) {
-	        debugger;
-	        _this2.mediator.trigger(event, response);
-	      });
-	    }
-	  }, {
-	    key: 'subscribe',
-	    value: function subscribe(subscriber, event) {
-	      this.mediator.on(event, subscriber);
-	    }
-	  }]);
-	  return RestStore;
-	}(_DataStore3.default);
-
-	exports.default = RestStore;
-
-/***/ },
-/* 92 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	      value: true
-	});
-
-	var _classCallCheck2 = __webpack_require__(3);
-
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-	var _createClass2 = __webpack_require__(4);
-
-	var _createClass3 = _interopRequireDefault(_createClass2);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var DataStore = function () {
-	      function DataStore() {
-	            (0, _classCallCheck3.default)(this, DataStore);
-	      }
-
-	      (0, _createClass3.default)(DataStore, [{
-	            key: "load",
-	            value: function load(entry) {}
-	      }, {
-	            key: "save",
-	            value: function save(entry) {}
-	      }, {
-	            key: "add",
-	            value: function add(entry) {}
-	      }, {
-	            key: "delete",
-	            value: function _delete(entry) {}
-	      }]);
-	      return DataStore;
-	}();
-
-	exports.default = DataStore;
-
-/***/ },
-/* 93 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _classCallCheck2 = __webpack_require__(3);
-
-	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-	var _createClass2 = __webpack_require__(4);
-
-	var _createClass3 = _interopRequireDefault(_createClass2);
-
-	var _mustache = __webpack_require__(94);
+	var _mustache = __webpack_require__(92);
 
 	var _mustache2 = _interopRequireDefault(_mustache);
 
@@ -12206,6 +12087,17 @@
 	  }
 
 	  (0, _createClass3.default)(Component, [{
+	    key: 'beforeInit',
+	    value: function beforeInit() {
+	      this.subscribe();
+	    }
+	  }, {
+	    key: 'init',
+	    value: function init() {}
+	  }, {
+	    key: 'subscribe',
+	    value: function subscribe() {}
+	  }, {
 	    key: 'templateHelpers',
 	    value: function templateHelpers() {
 	      return {};
@@ -12227,7 +12119,7 @@
 	exports.default = Component;
 
 /***/ },
-/* 94 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -12863,7 +12755,23 @@
 
 
 /***/ },
-/* 95 */
+/* 93 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  LOAD: 'load',
+	  SAVE: 'save',
+	  ADD: 'add',
+	  DELETE: 'delete'
+	};
+
+/***/ },
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -12888,10 +12796,6 @@
 
 	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
 
-	var _get2 = __webpack_require__(96);
-
-	var _get3 = _interopRequireDefault(_get2);
-
 	var _inherits2 = __webpack_require__(83);
 
 	var _inherits3 = _interopRequireDefault(_inherits2);
@@ -12900,13 +12804,13 @@
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _RestStore = __webpack_require__(91);
-
-	var _RestStore2 = _interopRequireDefault(_RestStore);
-
-	var _Component2 = __webpack_require__(93);
+	var _Component2 = __webpack_require__(91);
 
 	var _Component3 = _interopRequireDefault(_Component2);
+
+	var _StoreAction = __webpack_require__(93);
+
+	var _StoreAction2 = _interopRequireDefault(_StoreAction);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12918,32 +12822,25 @@
 
 	    var _this2 = (0, _possibleConstructorReturn3.default)(this, (TorrentList.__proto__ || (0, _getPrototypeOf2.default)(TorrentList)).call(this, ctx, node));
 
-	    _this2.dataStore = ctx.dataStore;
-	    _this2.subscribe();
-	    _this2.loadData();
+	    _this2.rTorrentApi = ctx.getStore('RTorrentApi');
 	    return _this2;
 	  }
 
 	  (0, _createClass3.default)(TorrentList, [{
+	    key: 'init',
+	    value: function init() {
+	      this.loadData();
+	    }
+	  }, {
 	    key: 'subscribe',
 	    value: function subscribe() {
 	      var _this3 = this;
 
-	      this.dataStore.subscribe('add', function (data) {
-	        _this3.loadData();
-	      });
-	      this.dataStore.subscribe('delete', function (data) {
-	        _this3.loadData();
-	      });
-	      this.dataStore.subscribe('load', function (data) {
-	        _this3.render(data);
-	      });
-	      this.node.delegate('button.reload', 'click', function (event) {
-	        _this3.loadData();
-	      });
-	      this.node.delegate('button.delete', 'click', function (event) {
-	        _this3.delete(event);
-	      });
+	      this.rTorrentApi.on(_StoreAction2.default.ADD, this.loadData.bind(this));
+	      this.rTorrentApi.on(_StoreAction2.default.DELETE, this.loadData.bind(this));
+	      this.rTorrentApi.on(_StoreAction2.default.LOAD, this.render.bind(this));
+	      this.node.delegate('button.reload', 'click', this.loadData.bind(this));
+	      this.node.delegate('button.delete', 'click', this.delete.bind(this));
 	      setInterval(function () {
 	        _this3.loadData();
 	      }, 5000);
@@ -12974,19 +12871,13 @@
 	        call: 'd.erase',
 	        hash: hash
 	      };
-	      this.dataStore.delete(request);
+	      this.rTorrentApi.delete(request);
 	    }
 	  }, {
 	    key: 'loadData',
 	    value: function loadData() {
 	      var request = { action: 'getAll' };
-	      this.dataStore.load(request);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render(data) {
-	      debugger;
-	      (0, _get3.default)(TorrentList.prototype.__proto__ || (0, _getPrototypeOf2.default)(TorrentList.prototype), 'render', this).call(this, data);
+	      this.rTorrentApi.load(request);
 	    }
 	  }]);
 	  return TorrentList;
@@ -12995,80 +12886,157 @@
 	exports.default = TorrentList;
 
 /***/ },
-/* 96 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
-	exports.__esModule = true;
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 
 	var _getPrototypeOf = __webpack_require__(25);
 
 	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
 
-	var _getOwnPropertyDescriptor = __webpack_require__(97);
+	var _classCallCheck2 = __webpack_require__(3);
 
-	var _getOwnPropertyDescriptor2 = _interopRequireDefault(_getOwnPropertyDescriptor);
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(36);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(83);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _RestStore2 = __webpack_require__(96);
+
+	var _RestStore3 = _interopRequireDefault(_RestStore2);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	exports.default = function get(object, property, receiver) {
-	  if (object === null) object = Function.prototype;
-	  var desc = (0, _getOwnPropertyDescriptor2.default)(object, property);
+	var RTorrentApi = function (_RestStore) {
+	  (0, _inherits3.default)(RTorrentApi, _RestStore);
 
-	  if (desc === undefined) {
-	    var parent = (0, _getPrototypeOf2.default)(object);
-
-	    if (parent === null) {
-	      return undefined;
-	    } else {
-	      return get(parent, property, receiver);
-	    }
-	  } else if ("value" in desc) {
-	    return desc.value;
-	  } else {
-	    var getter = desc.get;
-
-	    if (getter === undefined) {
-	      return undefined;
-	    }
-
-	    return getter.call(receiver);
+	  function RTorrentApi() {
+	    (0, _classCallCheck3.default)(this, RTorrentApi);
+	    return (0, _possibleConstructorReturn3.default)(this, (RTorrentApi.__proto__ || (0, _getPrototypeOf2.default)(RTorrentApi)).call(this, '/rtorrent/api'));
 	  }
-	};
+
+	  return RTorrentApi;
+	}(_RestStore3.default);
+
+	exports.default = RTorrentApi;
+
+/***/ },
+/* 96 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _getPrototypeOf = __webpack_require__(25);
+
+	var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+	var _classCallCheck2 = __webpack_require__(3);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(4);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	var _possibleConstructorReturn2 = __webpack_require__(36);
+
+	var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+	var _inherits2 = __webpack_require__(83);
+
+	var _inherits3 = _interopRequireDefault(_inherits2);
+
+	var _jquery = __webpack_require__(1);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _Mediator = __webpack_require__(97);
+
+	var _Mediator2 = _interopRequireDefault(_Mediator);
+
+	var _DataStore2 = __webpack_require__(98);
+
+	var _DataStore3 = _interopRequireDefault(_DataStore2);
+
+	var _StoreAction = __webpack_require__(93);
+
+	var _StoreAction2 = _interopRequireDefault(_StoreAction);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var RestStore = function (_DataStore) {
+	  (0, _inherits3.default)(RestStore, _DataStore);
+
+	  function RestStore(endpoint) {
+	    var mediator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new _Mediator2.default();
+	    (0, _classCallCheck3.default)(this, RestStore);
+
+	    var _this = (0, _possibleConstructorReturn3.default)(this, (RestStore.__proto__ || (0, _getPrototypeOf2.default)(RestStore)).call(this, mediator));
+
+	    _this.endpoint = endpoint;
+	    return _this;
+	  }
+
+	  (0, _createClass3.default)(RestStore, [{
+	    key: 'load',
+	    value: function load(entry) {
+	      return this.request(_StoreAction2.default.LOAD, 'GET', entry);
+	    }
+	  }, {
+	    key: 'save',
+	    value: function save(entry) {
+	      return this.request(_StoreAction2.default.SAVE, 'POST', entry);
+	    }
+	  }, {
+	    key: 'add',
+	    value: function add(entry) {
+	      return this.request(_StoreAction2.default.ADD, 'PUT', entry);
+	    }
+	  }, {
+	    key: 'delete',
+	    value: function _delete(entry) {
+	      return this.request(_StoreAction2.default.DELETE, 'POST', entry);
+	    }
+	  }, {
+	    key: 'request',
+	    value: function request(event, type, payload) {
+	      var _this2 = this;
+
+	      return _jquery2.default.ajax({
+	        url: this.endpoint,
+	        type: type,
+	        data: payload
+	      }).then(JSON.parse).then(function (response) {
+	        _this2.mediator.trigger(event, response);
+	      });
+	    }
+	  }, {
+	    key: 'on',
+	    value: function on(event, subscriber, context) {
+	      this.mediator.on(event, subscriber, context);
+	    }
+	  }]);
+	  return RestStore;
+	}(_DataStore3.default);
+
+	exports.default = RestStore;
 
 /***/ },
 /* 97 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = { "default": __webpack_require__(98), __esModule: true };
-
-/***/ },
-/* 98 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(99);
-	var $Object = __webpack_require__(10).Object;
-	module.exports = function getOwnPropertyDescriptor(it, key){
-	  return $Object.getOwnPropertyDescriptor(it, key);
-	};
-
-/***/ },
-/* 99 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
-	var toIObject                 = __webpack_require__(52)
-	  , $getOwnPropertyDescriptor = __webpack_require__(79).f;
-
-	__webpack_require__(35)('getOwnPropertyDescriptor', function(){
-	  return function getOwnPropertyDescriptor(it, key){
-	    return $getOwnPropertyDescriptor(toIObject(it), key);
-	  };
-	});
-
-/***/ },
-/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13096,9 +13064,9 @@
 
 	  (0, _createClass3.default)(Mediator, [{
 	    key: "on",
-	    value: function on(event, callback) {
-	      this.events[event] = [];
-	      this.events[event].push(callback);
+	    value: function on(event, callback, context) {
+	      this.events[event] = this.events[event] || [];
+	      this.events[event].push(context ? callback.bind(context) : callback);
 	    }
 	  }, {
 	    key: "trigger",
@@ -13114,6 +13082,51 @@
 	}();
 
 	exports.default = Mediator;
+
+/***/ },
+/* 98 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _classCallCheck2 = __webpack_require__(3);
+
+	var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+	var _createClass2 = __webpack_require__(4);
+
+	var _createClass3 = _interopRequireDefault(_createClass2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var DataStore = function () {
+	  function DataStore(mediator) {
+	    (0, _classCallCheck3.default)(this, DataStore);
+
+	    this.mediator = mediator;
+	  }
+
+	  (0, _createClass3.default)(DataStore, [{
+	    key: "load",
+	    value: function load(entry) {}
+	  }, {
+	    key: "save",
+	    value: function save(entry) {}
+	  }, {
+	    key: "add",
+	    value: function add(entry) {}
+	  }, {
+	    key: "delete",
+	    value: function _delete(entry) {}
+	  }]);
+	  return DataStore;
+	}();
+
+	exports.default = DataStore;
 
 /***/ }
 /******/ ]);
