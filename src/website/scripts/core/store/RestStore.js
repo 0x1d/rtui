@@ -28,7 +28,7 @@ export default class RestStore extends DataStore {
     })
     .then(JSON.parse)
     .then((response) => {
-      this.mediator.trigger(event, response)
+      this.mediator.trigger(event, response);
     });
   }
   on(event, subscriber, context){

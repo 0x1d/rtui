@@ -40,17 +40,11 @@ export default class TorrentList extends Component {
 
   delete(event) {
     let hash = $(event.target).parents('.entry').data('hash');
-    let request = {
-      action : 'multicall',
-      call: 'd.erase',
-      hash: hash
-    };
-    this.rTorrentApi.delete(request);
+    this.rTorrentApi.delete(hash);
   }
 
   loadData(){
-    let request = { action : 'getAll' };
-    this.rTorrentApi.load(request);
+    this.rTorrentApi.loadAll();
   }
 
 }
