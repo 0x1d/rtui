@@ -24,8 +24,8 @@ button {
 .AddTorrent {
   margin-bottom: 20px;
 }
-.AddTorrent input {
-  width: 90%;
+.AddTorrent div {
+  text-align: center;
 }
 .TorrentList table {
   width: 100%;
