@@ -10297,7 +10297,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _classCallCheck2 = __webpack_require__(3);
@@ -10321,73 +10321,73 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var App = function () {
-	  function App() {
-	    (0, _classCallCheck3.default)(this, App);
+	    function App() {
+	        (0, _classCallCheck3.default)(this, App);
 
-	    this.dataStores = [];
-	  }
+	        this.dataStores = [];
+	    }
 
-	  (0, _createClass3.default)(App, [{
-	    key: 'withDataStore',
-	    value: function withDataStore(dataStore) {
-	      this.dataStores[dataStore.constructor.name] = dataStore;
-	      return this;
-	    }
-	  }, {
-	    key: 'getStore',
-	    value: function getStore(dataStore) {
-	      return this.dataStores[dataStore];
-	    }
-	  }, {
-	    key: 'run',
-	    value: function run() {
-	      this._loadComponents();
-	      this._beforeInitComponents();
-	      this._initComponents();
-	      return this;
-	    }
-	  }, {
-	    key: '_loadComponents',
-	    value: function _loadComponents() {
-	      this.components = [];
-	      for (var c in Components) {
-	        var nodes = (0, _jquery2.default)('.' + c);
-	        for (var i = 0; i < nodes.length; i++) {
-	          var component = new Components[c](this, (0, _jquery2.default)(nodes[i]));
-	          this.components.push(component);
-	        };
-	      }
-	    }
-	  }, {
-	    key: '_initComponents',
-	    value: function _initComponents() {
-	      this.components.forEach(this._initComponent);
-	    }
-	  }, {
-	    key: '_beforeInitComponents',
-	    value: function _beforeInitComponents() {
-	      this.components.forEach(this._beforeInitComponent);
-	    }
-	  }, {
-	    key: '_initComponent',
-	    value: function _initComponent(component) {
-	      component.init();
-	    }
-	  }, {
-	    key: '_beforeInitComponent',
-	    value: function _beforeInitComponent(component) {
-	      component.beforeInit();
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      for (var component in this.components) {
-	        this.components[component].render();
-	      }
-	      return this;
-	    }
-	  }]);
-	  return App;
+	    (0, _createClass3.default)(App, [{
+	        key: 'withDataStore',
+	        value: function withDataStore(dataStore) {
+	            this.dataStores[dataStore.constructor.name] = dataStore;
+	            return this;
+	        }
+	    }, {
+	        key: 'getStore',
+	        value: function getStore(dataStore) {
+	            return this.dataStores[dataStore];
+	        }
+	    }, {
+	        key: 'run',
+	        value: function run() {
+	            this._loadComponents();
+	            this._beforeInitComponents();
+	            this._initComponents();
+	            return this;
+	        }
+	    }, {
+	        key: '_loadComponents',
+	        value: function _loadComponents(ctx) {
+	            this.components = [];
+	            for (var c in Components) {
+	                var nodes = ctx ? ctx.find('.' + c) : (0, _jquery2.default)('.' + c);
+	                for (var i = 0; i < nodes.length; i++) {
+	                    var component = new Components[c](this, (0, _jquery2.default)(nodes[i]));
+	                    this.components.push(component);
+	                };
+	            }
+	        }
+	    }, {
+	        key: '_initComponents',
+	        value: function _initComponents() {
+	            this.components.forEach(this._initComponent);
+	        }
+	    }, {
+	        key: '_beforeInitComponents',
+	        value: function _beforeInitComponents() {
+	            this.components.forEach(this._beforeInitComponent);
+	        }
+	    }, {
+	        key: '_initComponent',
+	        value: function _initComponent(component) {
+	            component.init();
+	        }
+	    }, {
+	        key: '_beforeInitComponent',
+	        value: function _beforeInitComponent(component) {
+	            component.beforeInit();
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            for (var component in this.components) {
+	                this.components[component].render();
+	            }
+	            return this;
+	        }
+	    }]);
+	    return App;
 	}();
 
 	exports.default = App;
@@ -10773,10 +10773,6 @@
 
 	var _StoreAction2 = _interopRequireDefault(_StoreAction);
 
-	var _DataField = __webpack_require__(109);
-
-	var _DataField2 = _interopRequireDefault(_DataField);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var AddTorrent = function (_Component) {
@@ -10813,7 +10809,9 @@
 	    }, {
 	        key: 'addTorrent',
 	        value: function addTorrent() {
-	            this.rTorrentApi.add({ torrentLink: this.data.torrentLink.value });
+	            this.rTorrentApi.add({
+	                torrentLink: this.data.torrentLink.value
+	            });
 	        }
 	    }, {
 	        key: 'torrentAdded',
@@ -12114,7 +12112,7 @@
 	        key: 'bindData',
 	        value: function bindData() {
 	            var _this = this;
-	            (0, _jquery2.default)('[data-bind]').each(function () {
+	            this.node.find('[data-bind]').each(function () {
 	                var field = (0, _jquery2.default)(this);
 	                _this.data[field.data('bind')] = new _DataField2.default(field);
 	            });
@@ -12129,6 +12127,7 @@
 	                return new _promise2.default(function (fulfill, reject) {
 	                    _this2.node.html(_mustache2.default.render(template, data));
 	                    _this2.bindData();
+	                    _this2.ctx._loadComponents(_this2.node);
 	                    fulfill();
 	                });
 	            });
@@ -13549,7 +13548,6 @@
 	        key: 'inputHandler',
 	        value: function inputHandler() {
 	            return {
-
 	                set: function set(target, prop, newValue) {
 	                    if (prop == 'value' && target.id) {
 	                        target[prop] = newValue;
@@ -13557,11 +13555,9 @@
 	                        return true;
 	                    } else return false;
 	                },
-
 	                get: function get(target, name) {
 	                    return target[name];
 	                }
-
 	            };
 	        }
 	    }]);
@@ -13593,7 +13589,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _getPrototypeOf = __webpack_require__(25);
@@ -13631,66 +13627,66 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var TorrentList = function (_Component) {
-	  (0, _inherits3.default)(TorrentList, _Component);
+	    (0, _inherits3.default)(TorrentList, _Component);
 
-	  function TorrentList(ctx, node) {
-	    (0, _classCallCheck3.default)(this, TorrentList);
+	    function TorrentList(ctx, node) {
+	        (0, _classCallCheck3.default)(this, TorrentList);
 
-	    var _this2 = (0, _possibleConstructorReturn3.default)(this, (TorrentList.__proto__ || (0, _getPrototypeOf2.default)(TorrentList)).call(this, ctx, node));
+	        var _this2 = (0, _possibleConstructorReturn3.default)(this, (TorrentList.__proto__ || (0, _getPrototypeOf2.default)(TorrentList)).call(this, ctx, node));
 
-	    _this2.rTorrentApi = ctx.getStore('RTorrentApi');
-	    return _this2;
-	  }
-
-	  (0, _createClass3.default)(TorrentList, [{
-	    key: 'init',
-	    value: function init() {
-	      this.loadData();
+	        _this2.rTorrentApi = ctx.getStore('RTorrentApi');
+	        return _this2;
 	    }
-	  }, {
-	    key: 'subscribe',
-	    value: function subscribe() {
-	      var _this3 = this;
 
-	      this.rTorrentApi.on(_StoreAction2.default.ADD, this.loadData.bind(this));
-	      this.rTorrentApi.on(_StoreAction2.default.DELETE, this.loadData.bind(this));
-	      this.rTorrentApi.on(_StoreAction2.default.LOAD, this.render.bind(this));
-	      this.node.delegate('button.reload', 'click', this.loadData.bind(this));
-	      this.node.delegate('button.delete', 'click', this.delete.bind(this));
-	      setInterval(function () {
-	        _this3.loadData();
-	      }, 5000);
-	    }
-	  }, {
-	    key: 'convertBytesToMb',
-	    value: function convertBytesToMb(bytes) {
-	      return (bytes / 1048576).toFixed(3);
-	    }
-	  }, {
-	    key: 'templateHelpers',
-	    value: function templateHelpers() {
-	      var _this = this;
-	      return {
-	        toMb: function toMb() {
-	          return function (text, render) {
-	            return _this.convertBytesToMb(render(text));
-	          };
+	    (0, _createClass3.default)(TorrentList, [{
+	        key: 'init',
+	        value: function init() {
+	            this.loadData();
 	        }
-	      };
-	    }
-	  }, {
-	    key: 'delete',
-	    value: function _delete(event) {
-	      var hash = (0, _jquery2.default)(event.target).parents('.entry').data('hash');
-	      this.rTorrentApi.delete(hash);
-	    }
-	  }, {
-	    key: 'loadData',
-	    value: function loadData() {
-	      this.rTorrentApi.loadAll();
-	    }
-	  }]);
-	  return TorrentList;
+	    }, {
+	        key: 'subscribe',
+	        value: function subscribe() {
+	            var _this3 = this;
+
+	            this.rTorrentApi.on(_StoreAction2.default.ADD, this.loadData.bind(this));
+	            this.rTorrentApi.on(_StoreAction2.default.DELETE, this.loadData.bind(this));
+	            this.rTorrentApi.on(_StoreAction2.default.LOAD, this.render.bind(this));
+	            this.node.delegate('button.reload', 'click', this.loadData.bind(this));
+	            this.node.delegate('button.delete', 'click', this.delete.bind(this));
+	            setInterval(function () {
+	                _this3.loadData();
+	            }, 5000);
+	        }
+	    }, {
+	        key: 'convertBytesToMb',
+	        value: function convertBytesToMb(bytes) {
+	            return (bytes / 1048576).toFixed(3);
+	        }
+	    }, {
+	        key: 'templateHelpers',
+	        value: function templateHelpers() {
+	            var _this = this;
+	            return {
+	                toMb: function toMb() {
+	                    return function (text, render) {
+	                        return _this.convertBytesToMb(render(text));
+	                    };
+	                }
+	            };
+	        }
+	    }, {
+	        key: 'delete',
+	        value: function _delete(event) {
+	            var hash = (0, _jquery2.default)(event.target).parents('.entry').data('hash');
+	            this.rTorrentApi.delete(hash);
+	        }
+	    }, {
+	        key: 'loadData',
+	        value: function loadData() {
+	            this.rTorrentApi.loadAll();
+	        }
+	    }]);
+	    return TorrentList;
 	}(_Component3.default);
 
 	exports.default = TorrentList;

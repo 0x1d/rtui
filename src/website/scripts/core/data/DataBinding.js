@@ -11,7 +11,6 @@ export default class DataBinding {
 
     inputHandler() {
         return {
-
             set: function(target, prop, newValue) {
                 if (prop == 'value' && target.id) {
                     target[prop] = newValue;
@@ -20,11 +19,9 @@ export default class DataBinding {
                 } else return false;
 
             },
-
             get: function(target, name) {
                 return target[name];
             }
-
         };
     }
 

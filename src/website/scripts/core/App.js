@@ -5,58 +5,58 @@ import * as Components from '../components/exports';
 
 export default class App {
 
-  constructor(){
-    this.dataStores = [];
-  }
-
-  withDataStore(dataStore) {
-    this.dataStores[dataStore.constructor.name] = dataStore;
-    return this;
-  }
-
-  getStore(dataStore) {
-    return this.dataStores[dataStore];
-  }
-
-  run() {
-    this._loadComponents();
-    this._beforeInitComponents();
-    this._initComponents();
-    return this;
-  }
-
-  _loadComponents(){
-    this.components = [];
-    for(let c in Components){
-      let nodes = $('.' + c);
-      for(let i = 0; i < nodes.length; i++){
-        let component = new Components[c](this, $(nodes[i]));
-        this.components.push(component);
-      };
+    constructor() {
+        this.dataStores = [];
     }
-  }
 
-  _initComponents(){
-    this.components.forEach(this._initComponent);
-  }
-
-  _beforeInitComponents(){
-    this.components.forEach(this._beforeInitComponent);
-  }
-
-  _initComponent(component){
-    component.init();
-  }
-
-  _beforeInitComponent(component){
-    component.beforeInit();
-  }
-
-  render(){
-    for(let component in this.components){
-      this.components[component].render();
+    withDataStore(dataStore) {
+        this.dataStores[dataStore.constructor.name] = dataStore;
+        return this;
     }
-    return this;
-  }
+
+    getStore(dataStore) {
+        return this.dataStores[dataStore];
+    }
+
+    run() {
+        this._loadComponents();
+        this._beforeInitComponents();
+        this._initComponents();
+        return this;
+    }
+
+    _loadComponents(ctx) {
+        this.components = [];
+        for (let c in Components) {
+            let nodes = ctx ? ctx.find('.' + c) : $('.' + c);
+            for (let i = 0; i < nodes.length; i++) {
+                let component = new Components[c](this, $(nodes[i]));
+                this.components.push(component);
+            };
+        }
+    }
+
+    _initComponents() {
+        this.components.forEach(this._initComponent);
+    }
+
+    _beforeInitComponents() {
+        this.components.forEach(this._beforeInitComponent);
+    }
+
+    _initComponent(component) {
+        component.init();
+    }
+
+    _beforeInitComponent(component) {
+        component.beforeInit();
+    }
+
+    render() {
+        for (let component in this.components) {
+            this.components[component].render();
+        }
+        return this;
+    }
 
 }

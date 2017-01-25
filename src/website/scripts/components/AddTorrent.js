@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import Component from '../core/Component';
 import StoreAction from '../core/store/StoreAction';
-import DataField from '../core/data/DataField';
 
 export default class AddTorrent extends Component {
 
@@ -27,7 +26,9 @@ export default class AddTorrent extends Component {
     }
 
     addTorrent() {
-        this.rTorrentApi.add({ torrentLink: this.data.torrentLink.value });
+        this.rTorrentApi.add({
+            torrentLink: this.data.torrentLink.value
+        });
     }
 
     torrentAdded(response) {

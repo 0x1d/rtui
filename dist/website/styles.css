@@ -1,17 +1,19 @@
 body {
-  background-color: lightgrey;
+  background-color: #fcfcfc;
   font-family: sans-serif;
 }
 body h1 {
   color: blue;
 }
-table th {
-  text-align: left;
-  border-bottom: solid 1px black;
-}
-table td {
-  padding: 8px 8px;
-  border-bottom: solid 1px grey;
+table {
+  /*th {
+    text-align: left;
+    border-bottom: solid 1px black;
+  }
+  td {
+    padding: 8px 8px;
+    border-bottom: solid 1px grey;
+  }*/
 }
 input[type="text"] {
   height: 32px;

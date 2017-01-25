@@ -1,23 +1,27 @@
-<table>
-  <th>Name</th>
-  <th>State</th>
-  <th>Down</th>
-  <th>Up</th>
-  <th>Up Total</th>
-  <th>Down Total</th>
-  <th>Size</th>
-  <th>Actions</th>
-  {{ #torrents }}
-  <tr data-hash="{{hash}}" class="entry">
-    <td>{{ name }}</td>
-    <td>{{ state }}</td>
-    <td>{{#helpers.toMb}}{{ down_rate }}{{/helpers.toMb}}</td>
-    <td>{{#helpers.toMb}}{{ up_rate }}{{/helpers.toMb}}</td>
-    <td>{{#helpers.toMb}}{{ up_total }}{{/helpers.toMb}}</td>
-    <td>{{#helpers.toMb}}{{ down_total }}{{/helpers.toMb}}</td>
-    <td>{{#helpers.toMb}}{{ size }}{{/helpers.toMb}}</td>
-    <td><button class="delete">Delete</button</td>
+<table class="striped bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>State</th>
+            <th>Down</th>
+            <th>Up</th>
+            <th>Up Total</th>
+            <th>Down Total</th>
+            <th>Size</th>
+            <th>Actions</th>
+        </tr>
+        {{ #torrents }}
+        <tr data-hash="{{hash}}" class="entry">
+            <td>{{ name }}</td>
+            <td>{{ state }}</td>
+            <td>{{#helpers.toMb}}{{ down_rate }}{{/helpers.toMb}}</td>
+            <td>{{#helpers.toMb}}{{ up_rate }}{{/helpers.toMb}}</td>
+            <td>{{#helpers.toMb}}{{ up_total }}{{/helpers.toMb}}</td>
+            <td>{{#helpers.toMb}}{{ down_total }}{{/helpers.toMb}}</td>
+            <td>{{#helpers.toMb}}{{ size }}{{/helpers.toMb}}</td>
+            <td><button class="delete btn">Delete</button</td>
   </tr>
   {{ /torrents }}
 </table>
-<button class="reload">Reload</button>
+<br>
+<button class="reload btn">Reload</button>

@@ -16,21 +16,13 @@ export default class Component {
         this.subscribe();
     }
 
-    init() {
-
-    }
-
-    subscribe() {
-
-    }
-
-    templateHelpers() {
-        return {};
-    }
+    init() {}
+    subscribe() {}
+    templateHelpers() { return {}; }
 
     bindData() {
         let _this = this;
-        $('[data-bind]').each(function() {
+        this.node.find('[data-bind]').each(function() {
             var field = $(this);
             _this.data[field.data('bind')] = new DataField(field);
         });
@@ -43,6 +35,7 @@ export default class Component {
                 return new Promise((fulfill, reject) => {
                     this.node.html(Mustache.render(template, data));
                     this.bindData();
+                    this.ctx._loadComponents(this.node);
                     fulfill();
                 });
             });
