@@ -18,15 +18,15 @@ export default class App {
         return this.dataStores[dataStore];
     }
 
-    run() {
-        this._loadComponents();
+    run(ctx) {
+        this._loadComponents(ctx);
         this._beforeInitComponents();
         this._initComponents();
         return this;
     }
 
     _loadComponents(ctx) {
-        this.components = [];
+        this.components = this.components || [];
         for (let c in Components) {
             let nodes = ctx ? ctx.find('.' + c) : $('.' + c);
             for (let i = 0; i < nodes.length; i++) {

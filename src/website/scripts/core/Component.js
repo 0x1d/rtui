@@ -4,11 +4,12 @@ import DataField from './data/DataField';
 
 export default class Component {
 
-    constructor(ctx, node) {
+    constructor(ctx, node, withTemplate = true) {
         this.ctx = ctx;
         this.node = node;
         this.component = this.constructor.name;
-        this.template = $.get(this.component + '.html'); //document.querySelector('#' +  this.component).import.body.textContent;
+        //console.log(this.component);
+        this.template = withTemplate ? $.get(this.component + '.html') : undefined; //document.querySelector('#' +  this.component).import.body.textContent;
         this.data = {};
     }
 

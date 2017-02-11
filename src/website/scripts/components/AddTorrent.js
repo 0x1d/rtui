@@ -15,8 +15,8 @@ export default class AddTorrent extends Component {
 
     subscribe() {
         this.rTorrentApi.on(StoreAction.ADD, this.torrentAdded.bind(this));
-        this.node.delegate('button', 'click', this.addTorrent.bind(this));
         this.node.delegate('input', 'keypress', this.enterEvent.bind(this));
+        this.node.delegate('button', 'click', this.addTorrent.bind(this));
     }
 
     enterEvent() {

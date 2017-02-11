@@ -5,6 +5,9 @@ body {
 body h1 {
   color: blue;
 }
+body .content {
+  padding-top: 10px;
+}
 table {
   /*th {
     text-align: left;
