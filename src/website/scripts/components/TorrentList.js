@@ -19,8 +19,8 @@ export default class TorrentList extends Component {
         this.rTorrentApi.on(StoreAction.DELETE, this.loadData.bind(this));
         this.rTorrentApi.on(StoreAction.LOAD, this.render.bind(this));
         //this.node.delegate('button.reload', 'click', this.loadData.bind(this));
-        this.node.delegate('button.delete', 'click', this.delete.bind(this));
-        setInterval(() => { this.loadData(); }, 5000);
+        this.node.delegate('.delete', 'click', this.delete.bind(this));
+        //setInterval(() => { this.loadData(); }, 5000);
     }
 
     convertBytesToMb(bytes) {

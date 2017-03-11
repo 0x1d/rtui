@@ -27,9 +27,29 @@ button {
 .AddTorrent {
   margin-bottom: 20px;
 }
-.AddTorrent div {
-  text-align: center;
-}
-.TorrentList table {
+.TorrentList .list {
   width: 100%;
+}
+.TorrentList .list .row {
+  margin-bottom: 1px;
+  padding: 8px;
+}
+.TorrentList .list .row.entry {
+  overflow: hidden;
+}
+.TorrentList .list .row.entry * {
+  font-size: 18px;
+}
+.TorrentList .list .row.entry.complete {
+  background-color: #c8e6c9;
+}
+.TorrentList .list .row.entry .actions {
+  cursor: pointer;
+}
+.TorrentList .list .row.entry .actions i {
+  font-size: 24px;
+  width: 24px;
+}
+.TorrentList .list .row.entry .actions i.delete {
+  color: red;
 }

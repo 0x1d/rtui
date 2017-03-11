@@ -13675,16 +13675,12 @@
 	    }, {
 	        key: 'subscribe',
 	        value: function subscribe() {
-	            var _this3 = this;
-
 	            this.rTorrentApi.on(_StoreAction2.default.ADD, this.loadData.bind(this));
 	            this.rTorrentApi.on(_StoreAction2.default.DELETE, this.loadData.bind(this));
 	            this.rTorrentApi.on(_StoreAction2.default.LOAD, this.render.bind(this));
 	            //this.node.delegate('button.reload', 'click', this.loadData.bind(this));
-	            this.node.delegate('button.delete', 'click', this.delete.bind(this));
-	            setInterval(function () {
-	                _this3.loadData();
-	            }, 5000);
+	            this.node.delegate('.delete', 'click', this.delete.bind(this));
+	            //setInterval(() => { this.loadData(); }, 5000);
 	        }
 	    }, {
 	        key: 'convertBytesToMb',
@@ -13891,7 +13887,8 @@
 	        var _this = (0, _possibleConstructorReturn3.default)(this, (Tabs.__proto__ || (0, _getPrototypeOf2.default)(Tabs)).call(this, ctx, node));
 
 	        _this.render().then(function () {
-	            (0, _jquery2.default)('ul.tabs').tabs();
+	            window.$('ul.tabs').tabs();
+	            ctx.run(_this.node);
 	        });
 	        return _this;
 	    }

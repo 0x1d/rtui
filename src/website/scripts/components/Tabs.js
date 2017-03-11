@@ -6,7 +6,8 @@ export default class Tabs extends Component {
     constructor(ctx, node) {
         super(ctx, node);
         this.render().then(() => {
-            $('ul.tabs').tabs();
+            window.$('ul.tabs').tabs();
+            ctx.run(this.node);
         });
     }
 }

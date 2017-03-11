@@ -1,5 +1,26 @@
 .TorrentList {
-  table {
+  .list {
     width: 100%;
+    .row {
+      margin-bottom: 1px;
+      padding: 8px;
+      &.entry {
+        * { font-size: 18px; }
+        overflow: hidden;
+        &.complete {
+          background-color: #c8e6c9;
+        }
+        .actions {
+          cursor: pointer;
+          i {
+            font-size: 24px;
+            width: 24px;;
+            &.delete {
+              color: red;
+            }
+          }
+        }
+      }
+    }
   }
 }

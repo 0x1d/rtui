@@ -1,8 +1,7 @@
-<table class="striped bordered">
+<!--<table class="list striped bordered">
     <thead>
         <tr>
             <th>Name</th>
-            <th>State</th>
             <th>Down</th>
             <th>Up</th>
             <th>Up Total</th>
@@ -11,18 +10,45 @@
             <th>Actions</th>
         </tr>
         {{ #torrents }}
-        <tr data-hash="{{hash}}" class="entry">
+        <tr data-hash="{{hash}}" class="entry {{state}}">
             <td>{{ name }}</td>
-            <td>{{ state }}</td>
             <td>{{#helpers.toMb}}{{ down_rate }}{{/helpers.toMb}}</td>
             <td>{{#helpers.toMb}}{{ up_rate }}{{/helpers.toMb}}</td>
             <td>{{#helpers.toMb}}{{ up_total }}{{/helpers.toMb}}</td>
             <td>{{#helpers.toMb}}{{ down_total }}{{/helpers.toMb}}</td>
             <td>{{#helpers.toMb}}{{ size }}{{/helpers.toMb}}</td>
-            <td><button class="delete btn red"><i class="fa fa-times" aria-hidden="true"></i>
-</button</td>
-  </tr>
-  {{ /torrents }}
+            <td class="actions">
+                <i class="move fa fa-angle-double-right" aria-hidden="true"></i>
+                <i class="delete fa fa-times" aria-hidden="true"></i>
+            </td>
+        </tr>
+        {{ /torrents }}
 </table>
-<br>
-<button class="Reload btn">Reload</button>
+-->
+
+<div class="list">
+    {{ #torrents }}
+    <div class="row entry {{ state }}" data-hash="{{hash}}">
+        <div class="col s12 m8 l10 actions">
+            {{ name }} <br>
+            <i class="move fa fa-angle-double-right" aria-hidden="true"></i>
+            <i class="delete fa fa-times" aria-hidden="true"></i>
+        </div>
+        <div class="col s8 m4 l2 info">
+            <i class="move fa fa-arrow-down" aria-hidden="true"></i> {{#helpers.toMb}}{{ down_rate }}{{/helpers.toMb}} /
+            <i class="move fa fa-arrow-up" aria-hidden="true"></i> {{#helpers.toMb}}{{ up_rate }}{{/helpers.toMb}} Mb/s
+            <br><i class="move fa fa-download" aria-hidden="true"></i> {{#helpers.toMb}}{{ down_total }}{{/helpers.toMb}} / {{#helpers.toMb}}{{ size }}{{/helpers.toMb}} Mb
+        </div>
+    </div>
+    {{ /torrents }}
+</div>
+
+<!-- TODO create toolbar component -->
+<div class="fixed-action-btn toolbar">
+    <a class="btn-floating btn-large red">
+        <i class="large fa fa-flash"></i>
+    </a>
+    <ul>
+        <li class="waves-effect waves-light"><a href="#!" class="Reload"><i class="material-icons">replay</i></a></li>
+    </ul>
+</div>
