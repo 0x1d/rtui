@@ -36,10 +36,14 @@ button {
   padding: 8px;
 }
 .TorrentList .list .row.entry {
+  background-color: #eeeeee;
   overflow: hidden;
 }
 .TorrentList .list .row.entry * {
-  font-size: 18px;
+  font-size: 16px;
+}
+.TorrentList .list .row.entry:hover {
+  background-color: #e0e0e0;
 }
 .TorrentList .list .row.entry:hover .actions {
   display: block;
@@ -52,6 +56,9 @@ button {
 }
 .TorrentList .list .row.entry.complete {
   background-color: #c8e6c9;
+}
+.TorrentList .list .row.entry.complete:hover {
+  background-color: #a5d6a7;
 }
 .TorrentList .list .row.entry .actions {
   cursor: pointer;
