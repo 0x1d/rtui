@@ -51,10 +51,12 @@ button {
 }
 .TorrentList .list .row.entry .actions {
   cursor: pointer;
+  text-align: right;
+  line-height: 48px;
 }
 .TorrentList .list .row.entry .actions i {
-  font-size: 28px;
-  width: 28px;
+  font-size: 32px;
+  width: 32px;
 }
 .TorrentList .list .row.entry .actions i.delete {
   color: red;
