@@ -29,15 +29,17 @@
 <div class="list">
     {{ #torrents }}
     <div class="row entry {{ state }}" data-hash="{{hash}}">
-        <div class="col s12 m8 l10 actions">
-            {{ name }} <br>
-            <i class="move fa fa-angle-double-right" aria-hidden="true"></i>
-            <i class="delete fa fa-times" aria-hidden="true"></i>
+        <div class="col s12 m6 l8">
+            <span>{{ name }}</span>
         </div>
         <div class="col s12 m4 l2 info">
             <i class="move fa fa-arrow-down" aria-hidden="true"></i> {{#helpers.toMb}}{{ down_rate }}{{/helpers.toMb}} /
             <i class="move fa fa-arrow-up" aria-hidden="true"></i> {{#helpers.toMb}}{{ up_rate }}{{/helpers.toMb}} Mb/s
             <br><i class="move fa fa-download" aria-hidden="true"></i> {{#helpers.toMb}}{{ down_total }}{{/helpers.toMb}} / {{#helpers.toMb}}{{ size }}{{/helpers.toMb}} Mb
+        </div>
+        <div class="col s12 m2 l2 actions">
+            <i class="move fa fa-angle-double-right" aria-hidden="true"></i>
+            <i class="delete fa fa-times" aria-hidden="true"></i>
         </div>
     </div>
     {{ /torrents }}

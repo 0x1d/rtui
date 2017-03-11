@@ -40,6 +40,12 @@ button {
 .TorrentList .list .row.entry * {
   font-size: 18px;
 }
+.TorrentList .list .row.entry:hover .actions {
+  display: block;
+}
+.TorrentList .list .row.entry .actions {
+  display: none;
+}
 .TorrentList .list .row.entry.complete {
   background-color: #c8e6c9;
 }
@@ -47,8 +53,8 @@ button {
   cursor: pointer;
 }
 .TorrentList .list .row.entry .actions i {
-  font-size: 24px;
-  width: 24px;
+  font-size: 28px;
+  width: 28px;
 }
 .TorrentList .list .row.entry .actions i.delete {
   color: red;

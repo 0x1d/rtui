@@ -5,16 +5,26 @@
       margin-bottom: 1px;
       padding: 8px;
       &.entry {
-        * { font-size: 18px; }
         overflow: hidden;
+        * { 
+          font-size: 18px; 
+        }
+        &:hover {
+          .actions {
+            display: block;
+          }
+        }
+        .actions {
+          display: none;
+        }
         &.complete {
           background-color: #c8e6c9;
         }
         .actions {
           cursor: pointer;
           i {
-            font-size: 24px;
-            width: 24px;;
+            font-size: 28px;
+            width: 28px;
             &.delete {
               color: red;
             }
