@@ -13,10 +13,12 @@ module.exports = function(ctx) {
             var feedProcessor = new FeedProcessor({
                 feedUrl: feed.url,
                 itemHandler: (item) => {
-                    var feedItem = ctx.storage.getItemSync(item.title) || {};
+                    var feeds = ctx.storage.getItemSync('feeds') || {};
+                    var feedItem = feeds[item.title] || {};
                     if (feedItem.link) return;
                     feedItem = item;
-                    ctx.storage.setItemSync(item.title, feedItem);
+                    feeds[item.title] = feedItem;
+                    ctx.storage.setItemSync('feeds', feeds);
                     ctx.rtorrent.loadLink(item.link)
                         .then((data) => {
                             ctx.log.info('download started: ' + feedItem.title);

@@ -13,17 +13,18 @@ module.exports = FeedService = {
     },
 
     getFeeds: function(ctx, http) {
-        ctx.storage.init().then(function() {
-            http.reply(ctx.storage.keys());
-        });
+        /*ctx.storage.init().then(function() {
+            ctx.storage.getItem('feeds').then(http.reply);
+        });*/
+        http.reply(ctx.storage.getItemSync('feeds'));
     },
 
     addFeed: function(ctx, http) {
-        ctx.storage.init().then(function() {
+        /*ctx.storage.init().then(function() {
             ctx.storage.setItem(http.data.itemKey, http.data.item).then(function() {
                 http.reply({});
             }).catch(throwError);
-        });
+        });*/
     },
 
     throwError: function(error) {
