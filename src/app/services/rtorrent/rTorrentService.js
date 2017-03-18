@@ -9,19 +9,20 @@ module.exports = rTorrentService = {
     POST: function(ctx, http) { this.rTorrentApiCall(ctx, http) },
 
     PUT: function(ctx, http) {
+        console.log(http.data);
         ctx.rtorrent.loadLink(http.data.torrentLink)
             .then(http.reply)
             .catch(this.throwError);
     },
 
     rTorrentApiCall: function(ctx, http) {
-      try {
-        ctx.rtorrent[http.data.action](http.data)
-          .then(http.reply)
-          .catch(this.throwError);
-      } catch (error) {
-        ctx.log.error(error);
-      }
+        try {
+            ctx.rtorrent[http.data.action](http.data)
+                .then(http.reply)
+                .catch(this.throwError);
+        } catch (error) {
+            ctx.log.error(error);
+        }
     },
 
     throwError: function(error) {

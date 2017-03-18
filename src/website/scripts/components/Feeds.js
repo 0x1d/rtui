@@ -1,11 +1,13 @@
 import $ from 'jquery';
 import Component from '../core/Component';
+import FeedsApi from '../stores/FeedsApi';
 
 export default class Feeds extends Component {
 
     constructor(ctx, node) {
         super(ctx, node);
-        this.data = [];
+
+        this.feedsApi = new FeedsApi();
     }
     init() {
         $.when($.get('/feeds/api/downloaded'), $.get('/feeds/api/feeds'))
@@ -13,6 +15,7 @@ export default class Feeds extends Component {
                 this.toDownloadedList(JSON.parse(downloaded[0]));
                 this.toFeedsList(JSON.parse(feeds[0]));
                 this.render(this.data);
+
             });
         this.node.delegate('.addFeed', 'click', this.addFeed.bind(this));
 
@@ -34,6 +37,10 @@ export default class Feeds extends Component {
     }
     addFeed() {
         console.log('addFeed');
+        this.feedsApi.save({
+            feedKey: this.data.feedKey.value,
+            feedUrl: this.data.feedUrl.value
+        });
     }
 
 }

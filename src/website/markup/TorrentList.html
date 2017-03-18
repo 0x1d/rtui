@@ -2,7 +2,7 @@
     {{ #torrents }}
     <div class="row entry {{ state }}" data-hash="{{hash}}">
         <div class="col s12 m6 l8">
-            <span>{{ name }}</span>
+            <span><b>{{ name }}</b></span>
         </div>
         <div class="col s12 m4 l2 info">
             <i class="move fa fa-arrow-down" aria-hidden="true"></i> {{#helpers.toMb}}{{ down_rate }}{{/helpers.toMb}} /

@@ -7,6 +7,11 @@ var FeedApi = {
     },
     downloaded: (ctx) => {
         return ctx.storage.getItemSync('downloaded');
+    },
+    addFeed: (ctx, http) => {
+        let feeds = ctx.storage.getItemSync('feeds') || {};
+        feeds[http.data.feedKey] = http.data.feedUrl;
+        ctx.storage.setItemSync('feeds', feeds);
     }
 };
 
@@ -20,10 +25,16 @@ let FeedService = {
         );
     },
 
-    POST: function(ctx, http) { this.addFeed(ctx, http); },
-
     PUT: function(ctx, http) {
-        this.addFeed(ctx, http);
+        console.log(qs.parse(http.data));
+        FeedApi.addFeed(ctx, http);
+        http.reply({});
+    },
+
+    POST: function(ctx, http) {
+        console.log(http.data);
+        FeedApi.addFeed(ctx, http);
+        http.reply({});
     },
 
     addFeed: function(ctx, http) {
