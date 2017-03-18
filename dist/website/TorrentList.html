@@ -1,31 +1,3 @@
-<!--<table class="list striped bordered">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Down</th>
-            <th>Up</th>
-            <th>Up Total</th>
-            <th>Down Total</th>
-            <th>Size</th>
-            <th>Actions</th>
-        </tr>
-        {{ #torrents }}
-        <tr data-hash="{{hash}}" class="entry {{state}}">
-            <td>{{ name }}</td>
-            <td>{{#helpers.toMb}}{{ down_rate }}{{/helpers.toMb}}</td>
-            <td>{{#helpers.toMb}}{{ up_rate }}{{/helpers.toMb}}</td>
-            <td>{{#helpers.toMb}}{{ up_total }}{{/helpers.toMb}}</td>
-            <td>{{#helpers.toMb}}{{ down_total }}{{/helpers.toMb}}</td>
-            <td>{{#helpers.toMb}}{{ size }}{{/helpers.toMb}}</td>
-            <td class="actions">
-                <i class="move fa fa-angle-double-right" aria-hidden="true"></i>
-                <i class="delete fa fa-times" aria-hidden="true"></i>
-            </td>
-        </tr>
-        {{ /torrents }}
-</table>
--->
-
 <div class="list">
     {{ #torrents }}
     <div class="row entry {{ state }}" data-hash="{{hash}}">

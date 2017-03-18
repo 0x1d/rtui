@@ -28,7 +28,7 @@ export default class App {
     _loadComponents(ctx) {
         this.components = this.components || [];
         for (let c in Components) {
-            let nodes = ctx ? ctx.find('.' + c) : $('.' + c);
+            let nodes = ctx ? ctx.find('.' + c) : [];
             for (let i = 0; i < nodes.length; i++) {
                 let component = new Components[c](this, $(nodes[i]));
                 this.components.push(component);

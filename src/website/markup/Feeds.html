@@ -1,0 +1,38 @@
+<h4>Feeds</h4>
+<div class="row">
+    <div class="input-field col s12 m10 l10">
+        <input type="text" data-bind="torrentLink" placeholder="rss feed url">
+    </div>
+    <div class="input-field col s12 m2 l2">
+        <button class="btn orange addFeed">Add</button>
+    </div>
+</div>
+<div class="list">
+    {{ #feeds }}
+    <div class="row entry" data-key="{{title}}">
+        <div class="col s12 m4 l2 ">
+            <span>{{ key }}</span>
+        </div>
+        <div class="col s12 m6 l8 ">
+            <span>{{ url }}</span>
+        </div>
+        <div class="col s12 m2 l2 actions">
+            <i class="move fa fa-angle-double-right" aria-hidden="true"></i>
+            <i class="delete fa fa-times" aria-hidden="true"></i>
+        </div>
+    </div>
+    {{ /feeds }}
+</div>
+<h4>Downloaded</h4>
+<div class="list">
+    {{ #downloaded }}
+    <div class="row entry" data-key="{{title}}">
+        <div class="col s12 m4 l2 ">
+            <span>{{ date }}</span>
+        </div>
+        <div class="col s12 m8 l10 ">
+            <span>{{ title }}</span>
+        </div>
+    </div>
+    {{ /downloaded }}
+</div>

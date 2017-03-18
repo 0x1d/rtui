@@ -1,22 +1,29 @@
+'use strict'
 const qs = require('querystring');
 
-module.exports = FeedService = {
+var FeedApi = {
+    feeds: (ctx) => {
+        return ctx.storage.getItemSync('feeds');
+    },
+    downloaded: (ctx) => {
+        return ctx.storage.getItemSync('downloaded');
+    }
+};
 
-    resource: '/api',
+let FeedService = {
 
-    GET: function(ctx, http) { this.getFeeds(ctx, http); },
+    resource: '/api(/:fun)',
+
+    GET: function(ctx, http) {
+        http.reply(
+            FeedApi[http.data.fun](ctx)
+        );
+    },
 
     POST: function(ctx, http) { this.addFeed(ctx, http); },
 
     PUT: function(ctx, http) {
         this.addFeed(ctx, http);
-    },
-
-    getFeeds: function(ctx, http) {
-        /*ctx.storage.init().then(function() {
-            ctx.storage.getItem('feeds').then(http.reply);
-        });*/
-        http.reply(ctx.storage.getItemSync('feeds'));
     },
 
     addFeed: function(ctx, http) {
@@ -35,3 +42,5 @@ module.exports = FeedService = {
     }
 
 };
+
+module.exports = FeedService;

@@ -9,16 +9,23 @@ module.exports = function(ctx) {
     var rtorrent = ctx.rtorrent || new Rtorrent(ctx.config.rTorrent);
 
     schedule.scheduleJob(ctx.config.rTorrent.checkFeedInterval, () => {
-        for (let feed of ctx.config.rTorrent.feeds) {
+
+        var rssFeeds = ctx.storage.getItemSync('feeds');
+        if (!rssFeeds) {
+            rssFeeds = ctx.config.rTorrent.feeds;
+            ctx.storage.setItemSync('feeds', rssFeeds);
+        }
+        for (let feed of rssFeeds) {
+
             var feedProcessor = new FeedProcessor({
                 feedUrl: feed.url,
                 itemHandler: (item) => {
-                    var feeds = ctx.storage.getItemSync('feeds') || {};
+                    var feeds = ctx.storage.getItemSync('downloaded') || {};
                     var feedItem = feeds[item.title] || {};
                     if (feedItem.link) return;
                     feedItem = item;
                     feeds[item.title] = feedItem;
-                    ctx.storage.setItemSync('feeds', feeds);
+                    ctx.storage.setItemSync('downloaded', feeds);
                     ctx.rtorrent.loadLink(item.link)
                         .then((data) => {
                             ctx.log.info('download started: ' + feedItem.title);

@@ -8,9 +8,9 @@ export default class Component {
         this.ctx = ctx;
         this.node = node;
         this.component = this.constructor.name;
-        //console.log(this.component);
         this.template = withTemplate ? $.get(this.component + '.html') : undefined; //document.querySelector('#' +  this.component).import.body.textContent;
         this.data = {};
+        //console.log('init ' + this.component);
     }
 
     beforeInit() {
@@ -36,7 +36,7 @@ export default class Component {
                 return new Promise((fulfill, reject) => {
                     this.node.html(Mustache.render(template, data));
                     this.bindData();
-                    this.ctx._loadComponents(this.node);
+                    //this.ctx._loadComponents(this.node);
                     fulfill();
                 });
             });

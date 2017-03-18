@@ -10,3 +10,5 @@ export { default as Tabs }
 from './Tabs'
 export { default as Modal }
 from './Modal'
+export { default as Feeds }
+from './Feeds'

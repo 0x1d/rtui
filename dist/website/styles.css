@@ -28,47 +28,47 @@ button {
 .AddTorrent {
   margin-bottom: 20px;
 }
-.TorrentList .list {
+.list {
   width: 100%;
 }
-.TorrentList .list .row {
+.list .row {
   margin-bottom: 1px;
   padding: 8px;
 }
-.TorrentList .list .row.entry {
+.list .row.entry {
   background-color: #eeeeee;
   overflow: hidden;
 }
-.TorrentList .list .row.entry * {
+.list .row.entry * {
   font-size: 16px;
 }
-.TorrentList .list .row.entry:hover {
+.list .row.entry:hover {
   background-color: #e0e0e0;
 }
-.TorrentList .list .row.entry:hover .actions {
+.list .row.entry:hover .actions {
   display: block;
 }
-.TorrentList .list .row.entry .info {
+.list .row.entry .info {
   color: #616161;
 }
-.TorrentList .list .row.entry .actions {
+.list .row.entry .actions {
   display: none;
 }
-.TorrentList .list .row.entry.complete {
+.list .row.entry.complete {
   background-color: #c8e6c9;
 }
-.TorrentList .list .row.entry.complete:hover {
+.list .row.entry.complete:hover {
   background-color: #a5d6a7;
 }
-.TorrentList .list .row.entry .actions {
+.list .row.entry .actions {
   cursor: pointer;
   text-align: right;
   line-height: 48px;
 }
-.TorrentList .list .row.entry .actions i {
+.list .row.entry .actions i {
   font-size: 32px;
   width: 32px;
 }
-.TorrentList .list .row.entry .actions i.delete {
+.list .row.entry .actions i.delete {
   color: red;
 }
