@@ -2,12 +2,13 @@ FROM node:latest
 
 # Create app directory
 RUN mkdir -p /usr/src/app
+RUN mkdir -p /usr/src/app/config
+RUN mkdir -p /usr/src/app/dist
 WORKDIR /usr/src/app
+VOLUME /config
 
 # Install app
 COPY package.json /usr/src/app/
-COPY dist /usr/src/app/dist
-COPY config /usr/src/app/config
 RUN npm install
 
 EXPOSE 8080
