@@ -7,7 +7,7 @@ RUN mkdir -p /usr/src/app/config
 RUN mkdir -p /usr/src/app/dist
 RUN mkdir -p /usr/src/app/dist/app
 WORKDIR /usr/src/app
-VOLUME /config
+VOLUME /usr/src/app/config
 
 # Install app
 COPY src /usr/src/app/src
