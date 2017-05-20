@@ -25,7 +25,7 @@
         "build:html": "cp -r src/website/markup/* dist/website",
         "build:assets": "cp -r src/website/assets dist/website",
         "build:app": "cp -r src/app/* dist/app",
-        "build": "npm run build:js && npm run build:css && npm run build:html && npm run build:assets && npm run build:app && npm run cp:config",
+        "build": "npm run build:js && npm run build:css && npm run build:html && npm run build:assets && npm run build:app",
         "watch:html": "nodemon -q -w src/website/markup --ext \".\" --exec \"npm run build:html\"",
         "watch:assets": "nodemon -q -w src/website/assets --ext \".\" --exec \"npm run build:assets\"",
         "watch:css": "nodemon -q -w src/website/styles --ext \".\" --exec \"npm run build:css\"",

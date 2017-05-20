@@ -10,6 +10,7 @@ VOLUME /config
 # Install app
 COPY package.json /usr/src/app/
 RUN npm install
+RUN npm run build
 
 EXPOSE 8080
 CMD [ "npm", "run", "app" ]
