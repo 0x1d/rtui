@@ -1,0 +1,18 @@
+rtorrent:
+  image: gists/rtorrent
+  volumes:
+    - /mnt/nas/downloads:/download
+  environment:
+    - USERNAME=user
+    - PASSWORD=password
+  restart: always
+
+rtui:
+  image: 0x1d/rtui
+  ports:
+    - "20102:8080"
+  volumes:
+    - /home/master/_rancher/config/dlbox/:/config
+  links:
+    - rtorrent:rtorrent
+  restart: always
